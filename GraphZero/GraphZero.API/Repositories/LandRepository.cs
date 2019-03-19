@@ -33,20 +33,15 @@ namespace GraphZero.API.Repositories
             return reviews.ToLookup(l => l.BlockId);
         }
 
+        //manzanas
         public Task<List<Block>> GetAllBlocks()
         {
             return _dbContext.Blocks.ToListAsync();
         }
 
-        /*public async Task<IEnumerable<Block>> GetBlockForLot(int lotId)
+        public async Task<Block> GetOneBlock(int id)
         {
-            return await _dbContext.Blocks.Where(lt => lt.LotId == lotId).ToListAsync();
+            return await _dbContext.Blocks.SingleOrDefaultAsync(p => p.Id == id);
         }
-
-        public async Task<ILookup<int, Block>> GetBlockForLots(IEnumerable<int> lotIds)
-        {
-            var reviews = await _dbContext.Blocks.Where(lt => lotIds.Contains(lt.LotId)).ToListAsync();
-            return reviews.ToLookup(r => r.LotId);
-        }*/
     }
 }

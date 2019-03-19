@@ -22,13 +22,6 @@ namespace GraphZero.API
 {
     public class Startup
     {
-        /*public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }*/
-
         private readonly IConfiguration _config;
         private readonly IHostingEnvironment _env;
 
@@ -38,33 +31,26 @@ namespace GraphZero.API
             _env = env;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<LandDbContext>(options =>
                 options.UseSqlServer(_config["ConnectionStrings:GraphZero"]));
 
-            //services.AddScoped<ProductRepository>();
             services.AddScoped<LandRepository>();
 
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));
             services.AddScoped<LandSchema>();
 
             services.AddGraphQL(o => { o.ExposeExceptions = false; })
-                .AddGraphTypes(ServiceLifetime.Scoped);
+                .AddGraphTypes(ServiceLifetime.Scoped)
+                //.AddUserContextBuilder(httpContext => httpContext.User)//ADDED 4 AUTHORIZATION
+                .AddDataLoader();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         //public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         public void Configure(IApplicationBuilder app, LandDbContext dbContext)
         {
-            /*if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
-            app.UseMvc();*/
             app.UseGraphQL<LandSchema>();
             app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             dbContext.Seed();

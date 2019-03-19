@@ -1,7 +1,6 @@
 ﻿using GraphZero.API.GraphQL.Types;
 using GraphZero.API.Repositories;
 using GraphQL.Types;
-using GraphZero.API.Data;//
 
 namespace GraphZero.API.GraphQL
 {
@@ -17,20 +16,16 @@ namespace GraphZero.API.GraphQL
                 "blocks",
                 resolve: context => landRepository.GetAllBlocks()
             );
-        }
-    }
-}
-/*namespace CarvedRock.Api.GraphQL
-{
-    public class CarvedRockQuery : ObjectGraphType
-    {
-        public CarvedRockQuery(ProductRepository productRepository)
-        {
-            Field<ListGraphType<ProductType>>(
-                "products",
-                resolve: context => productRepository.GetAll()
+            Field<BlockType>(
+                "block",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IdGraphType>>
+                    { Name = "id"}),
+                resolve: context =>
+                {
+                    var id = context.GetArgument<int>("id");
+                    return landRepository.GetOneBlock(id);
+                }
             );
         }
     }
-}*/
-
+}

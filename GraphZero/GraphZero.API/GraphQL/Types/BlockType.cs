@@ -1,16 +1,18 @@
-﻿using GraphQL.Types;//
+﻿using GraphQL.DataLoader;//
+using GraphQL.Types;//
 using GraphZero.API.Data.Entities;//
 using GraphZero.API.Repositories;//
 using System;
 using System.Collections.Generic;
 using System.Linq;//
+using System.Security.Claims;//
 using System.Text;
 
 namespace GraphZero.API.GraphQL.Types
 {
     public class BlockType : ObjectGraphType<Block>
     {
-        public BlockType(LandRepository landRepository)
+        public BlockType(LandRepository landRepository, IDataLoaderContextAccessor dataLoaderAccessor)
         {
             Name = "Block";
 
@@ -22,24 +24,17 @@ namespace GraphZero.API.GraphQL.Types
             Field(block => block.LotsQty).Description("Amount of lots contained in the block");
             Field<ListGraphType<LotType>>(
                 "LotIds",
-                resolve: context => landRepository.GetLotForBlock(context.Source.Id)
-                /*var loader =
-                        dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<int, ProductReview>(
-                            "GetReviewsByProductId", reviewRepository.GetForProducts);
-            return loader.LoadAsync(context.Source.Id);*/
-                /*{
-                    try
-                    {
-                        var request = new List<int> { context.Source.Id };
-                        var details = service.GetBlockDetailsAsync(request).Result;
-                        return details;
-                    }
-                    catch
-                    {
-                        //I would usually add logs here. Skipping that for demo simplicity
-                        return new List<BlockDetail>();
-                    }
-                }*/);
+                //resolve: context => landRepository.GetLotForBlock(context.Source.Id)
+                resolve: context =>
+                {
+                    //var user = (ClaimsPrincipal)context.UserContext;//ADDED 4 AUTHORIZATION
+                    var loader = dataLoaderAccessor.Context.GetOrAddCollectionBatchLoader<int, Lot>
+                    (
+                        "GetLotsByLotId", landRepository.GetLotForBlocks
+                    );
+                    return loader.LoadAsync(context.Source.Id);
+                }
+            );
         }
     }
 }
