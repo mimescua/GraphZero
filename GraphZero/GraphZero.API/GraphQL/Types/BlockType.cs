@@ -35,6 +35,7 @@ namespace GraphZero.API.GraphQL.Types
                     return loader.LoadAsync(context.Source.Id);
                 }
             );
+            Field(block => block.Coordinates).Description("Coordinates of the block geometry");
         }
     }
 }

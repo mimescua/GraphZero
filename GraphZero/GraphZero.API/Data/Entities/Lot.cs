@@ -20,5 +20,8 @@ namespace GraphZero.API.Data.Entities
         public double LeftMeasure { get; set; }
         public double BackMeasure { get; set; }
         public double RightMeasure { get; set; }
+
+        public string Type { get; set; }
+        public string Coordinates { get; set; }
     }
 }

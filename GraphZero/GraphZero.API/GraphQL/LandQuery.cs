@@ -26,6 +26,10 @@ namespace GraphZero.API.GraphQL
                     return landRepository.GetOneBlock(id);
                 }
             );
+            Field<ListGraphType<FeatureCollectionType>>(
+                "FeatureCollection",
+                resolve: context => landRepository.GetFeatureCollection()
+            );
         }
     }
 }

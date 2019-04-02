@@ -13,7 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Entities\BlockGeometry.cs" />
+    <Compile Remove="Data\Entities\BlockObject.cs" />
+    <Compile Remove="Data\Entities\BlockProperty.cs" />
+    <Compile Remove="Data\Entities\FeatureGeometry.cs" />
+    <Compile Remove="Data\Entities\FeatureProperty.cs" />
+    <Compile Remove="Data\GeometryType.cs" />
     <Compile Remove="Data\ILandService.cs" />
+    <Compile Remove="GraphQL\Types\GeometryTypeEnumType.cs" />
     <Compile Remove="Repositories\ProductRepository.cs" />
     <Compile Remove="Repositories\StaticLandService.cs" />
   </ItemGroup>

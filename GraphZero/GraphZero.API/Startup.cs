@@ -8,6 +8,7 @@ using GraphQL.Server.Ui.Playground;//
 using GraphQL.Types;//
 using GraphZero.API.Data;//
 using GraphZero.API.GraphQL;//
+using GraphZero.API.GraphQL.Types;//*/
 using GraphZero.API.Repositories;//
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,7 @@ namespace GraphZero.API
             services.AddDbContext<LandDbContext>(options =>
                 options.UseSqlServer(_config["ConnectionStrings:GraphZero"]));
 
+            services.AddSingleton<CoordinatesType>();
             services.AddScoped<LandRepository>();
 
             services.AddScoped<IDependencyResolver>(s => new FuncDependencyResolver(s.GetRequiredService));

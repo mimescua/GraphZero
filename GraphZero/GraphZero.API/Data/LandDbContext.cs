@@ -11,10 +11,7 @@ namespace GraphZero.API.Data
         }
         public DbSet<Lot> Lots { get; set; }
         public DbSet<Block> Blocks { get; set; }
-        /*protected override void OnModelCreating(ModelBuilder modelbuilder)
-        {
-            modelbuilder.Entity<>)()
-                .HasKey(sbyte => new { s.LotDetail});
-        }*/
+        public DbSet<Features> Features { get; set; }
+        public DbSet<FeatureCollection> FeatureCollection { get; set; }
     }
 }
